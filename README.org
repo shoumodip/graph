@@ -7,7 +7,7 @@ Graph equations and save them into ~.ppm~ files.
 #+begin_src console
 $ git clone https://github.com/shoumodip/graph
 $ cd graph
-$ gcc -o graph graph.c -lm
+$ cc -o graph graph.c
 #+end_src
 
 * Usage
@@ -26,13 +26,13 @@ An equation is a summation of terms. A term is of the form ~SxP~.
 - ~x~ is the variable (~x~)
 - ~P~ is the power of the variable
 
-Whitespace is ignored and can be placed anywhere.
-
 Some examples:
-- ~2*x ^ 2 - 3~ is written as ~2x2 - 3~
+- ~2*x^2 - 3x + 5~ is written as ~2x2 - 3x + 5~
 - ~2*x + 69~ is written as ~2x + 69~
 - ~x + 5~ is written as ~x + 5~
 - ~7~ is written as ~7~
+
+Whitespace is ignored and can be placed anywhere.
 
 * Flags
 ** ~-h~
