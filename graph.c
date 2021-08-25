@@ -1,4 +1,3 @@
-#include <math.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <errno.h>
@@ -172,7 +171,8 @@ bool term_parse(Term *term, char **expr)
  */
 float term_solve(Term term, float x)
 {
-    return term.scale * powf(x, term.power);
+    for (size_t i = 0; i < term.power; ++i) term.scale *= x;
+    return term.scale;
 }
 
 /*
