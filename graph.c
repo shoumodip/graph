@@ -349,6 +349,16 @@ void graph_draw(Graph *graph)
 }
 
 /*
+ * Store the RGB components in an array
+ * @param components uint8_t[3] The array to store the components into
+ * @param color uint32_t The color to extract the components from
+ */
+void rgb_components(uint8_t components[3], uint32_t color)
+{
+    for (size_t i = 0; i < 3; ++i) components[2 - i] = (color >> 8 * i) & 0xff;
+}
+
+/*
  * Save the graph to a PPM image
  * @param graph *Graph The graph to draw
  */
@@ -357,17 +367,18 @@ void graph_save(Graph *graph)
     FILE *file = fopen(graph->path, "w");
     ASSERT(file, "could not write '%s'", graph->path);
 
+    uint8_t foreground[3], background[3];
+    rgb_components(foreground, graph->fore);
+    rgb_components(background, graph->back);
+
     fprintf(file, "P3 %zu %zu 255\n", graph->cols, graph->rows);
     for (size_t y = 0; y < graph->rows; ++y) {
         for (size_t x = 0; x < graph->cols; ++x) {
-            uint32_t face = (graph->grid[y * graph->cols + x])
-                ? graph->fore
-                : graph->back;
+            uint8_t *face = (graph->grid[y * graph->cols + x])
+                ? foreground
+                : background;
 
-            fprintf(file, "%u %u %u ",
-                    (face >> 8 * 2) & 0xff,
-                    (face >> 8 * 1) & 0xff,
-                    (face >> 8 * 0) & 0xff);
+            fprintf(file, "%u %u %u ", face[0], face[1], face[2]);
         }
         fprintf(file, "\n");
     }
